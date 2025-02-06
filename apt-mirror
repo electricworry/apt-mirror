@@ -156,11 +156,12 @@ chomp $config_variables{"defaultarch"};
 
 ##################################################
 ## Make sure we have all the compression commands
-my @compression_extensions = qw(xz gz bz2);
+my @compression_extensions = qw(xz gz bz2 lzma);
 my %compression_commands = (
     xz   => "xz",
     gz   => "gzip",
     bz2  => "bzip2",
+    lzma => "xz",
 );
 
 sub check_compression_commands
@@ -547,7 +548,7 @@ sub find_metadata_in_release
     my ( $release_uri, $release_path, $line ) = '';
     my $component_regex = undef;
     my $arch_regex = "(?:${arch}|all)";
-    my $compressed_extension_regex = '(?:\.(?:gz|bz2|xz))$';
+    my $compressed_extension_regex = '(?:\.(?:gz|bz2|xz|lzma))$';
     my $dist_uri;
     my $hash_type_regex = "(?:" . join("|", @hash_strength) . ")";
 
@@ -716,7 +717,7 @@ foreach (@config_binaries)
     unless (find_metadata_in_release( $arch, $uri, $distribution, @components))
     {
         # Insecure repo with no release file - try to get the well known indices
-        foreach my $file_extension (".gz", ".xz", ".bz2", "")
+        foreach my $file_extension (".gz", ".xz", ".bz2", ".lzma", "")
         {
             if (@components)
             {
@@ -757,7 +758,7 @@ foreach (@config_sources)
     unless (find_metadata_in_release( "source", $uri, $distribution, @components))
     {
         # Insecure repo with no release file - try to get the well known indices
-        foreach my $file_extension (".gz", ".xz", ".bz2", "")
+        foreach my $file_extension (".gz", ".xz", ".bz2", ".lzma", "")
         {
             if (@components)
             {
