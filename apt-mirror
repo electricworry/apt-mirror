@@ -612,6 +612,8 @@ sub find_metadata_in_release
                                 (
                                     $filename =~ m{^${component_regex}/source/Sources${compressed_extension_regex}}
                                 ) or (
+                                    $filename =~ m{^${component_regex}/source/Release}
+                                ) or (
                                     $filename =~ m{^${component_regex}/Contents-source${compressed_extension_regex}}
                                 )
                             )
